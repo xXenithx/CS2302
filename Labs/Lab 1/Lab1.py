@@ -82,7 +82,70 @@ def drawShiftedCircles(ax,n,center,radius,w):
             center[x-1] = center[x-1] * w
         #print('New Center Point:', center)
         drawShiftedCircles(ax,n-1,center,radius*w,w)
+
+def createTree(ax,n,p):
+    print('\nN = %d' % n)
+    ## Base Case
+    if n == 0:
+        #c = np.array([[p[0], p[1]]])
+        #print('Returning:\n',c)
+        print('At leaf returning')
+        print(p)
         
+        return p
+    if n >= 1:
+        print('Current Tree:')
+        print(p)
+        
+        x = p[0,0]
+        left = np.array([[x - x/2, x]])
+        right = np.array([[x + x/2,x]])
+        
+        print('\nLeft Child: ')
+        print(left)
+        print('\nRight Child: ')
+        print(right)
+        
+        ##Left Child
+        print('\nAppending and going to left child')
+        p = np.append(p, createTree(ax,n-1,left), axis=0)
+        print('\nReturned from left child.\nNew Tree:')
+        print(p)
+    
+        ##Parent
+        parent = np.array([[p[0,0], p[0,1]]])
+        print('\nAppending parent: ')
+        print(parent)
+        p = np.append(p, parent, axis=0)
+        print('\nNew Tree:')
+        print(p)
+
+        ##Right Child
+        print('\nAppending and going to right child')
+        p = np.append(p, createTree(ax,n-1,right), axis=0)
+        print('\nReturned from right child.\nNew Tree:')
+        print(p)
+        
+        ##Parent
+        parent = np.array([[p[0,0], p[0,1]]])
+        print('\nAppending parent: ')
+        print(parent)
+        p = np.append(p, parent, axis=0)
+        print('\nNew Tree:')
+        print(p)
+        return p
+    
+    
+def drawTree(ax,n,p):
+    if n == 0:
+        print('At root')
+        print(p)
+        return
+    else:
+        p = createTree(ax,n,p)
+        print('\nDone with creating tree: ')
+        print(p)
+        ax.plot(p[:,0],p[:,1], color='k')
 ############################ functions end here ###########################################
 
 plt.close("all")
@@ -103,106 +166,116 @@ else:
 ## Sqaures
 
 # a
-p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawSquares(ax,10,p,.2)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_1a.png')
+#p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
+#fig, ax = plt.subplots()
+#ax.axis('on')
+#ax.set_aspect(1.0)
+#drawSquares(ax,10,p,.2)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_1a.png')
+#
+## b
+#p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawSquares(ax,10,p,.1)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_1b.png')
+#
+## c
+#p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawSquares(ax,100,p,.1)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_1c.png')
+#
+### Circles
+## a
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawCircles(ax, 3, [100,0], 100,.5)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_2a.png')
+#
+## b
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawCircles(ax, 30, [100,0], 100,.87)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_2b.png')
+#
+## c
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawCircles(ax, 100, [100,0], 100,.92)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_2c.png')
+#
+### Problem 2
+## a
+#p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawMultiSquares(ax,2,p)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_3a.png')
+#
+## b
+#p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawMultiSquares(ax,3,p)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_3b.png')
+#
+## c
+#p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawMultiSquares(ax,4,p)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_3c.png')
+#
+### Problem 3
+## a
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawShiftedCircles(ax,10,[100,0], 100,.55)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_4a.png')
+#
+## b
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawShiftedCircles(ax,55,[100,0], 100,.55)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_4b.png')
+#
+## c
+#fig, ax = plt.subplots()
+#ax.axis('off')
+#ax.set_aspect(1.0)
+#drawShiftedCircles(ax,65,[100,0], 100,.90)
+#plt.show()
+#fig.savefig('Lab1_Output_Images/lab1_4c.png')
 
-# b
-p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawSquares(ax,10,p,.1)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_1b.png')
-
-# c
-p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawSquares(ax,100,p,.1)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_1c.png')
-
-## Circles
+## Problem 4
 # a
+p = np.array([[orig_size/2,orig_size]])
 fig, ax = plt.subplots()
-ax.axis('off')
+ax.axis('on')
 ax.set_aspect(1.0)
-drawCircles(ax, 3, [100,0], 100,.5)
+drawTree(ax,2,p)
 plt.show()
-fig.savefig('Lab1_Output_Images/lab1_2a.png')
-
-# b
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawCircles(ax, 30, [100,0], 100,.87)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_2b.png')
-
-# c
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawCircles(ax, 100, [100,0], 100,.92)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_2c.png')
-
-## Problem 2
-# a
-p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawMultiSquares(ax,2,p)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_3a.png')
-
-# b
-p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawMultiSquares(ax,3,p)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_3b.png')
-
-# c
-p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawMultiSquares(ax,4,p)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_3c.png')
-
-## Problem 3
-# a
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawShiftedCircles(ax,10,[100,0], 100,.55)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_4a.png')
-
-# b
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawShiftedCircles(ax,55,[100,0], 100,.55)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_4b.png')
-
-# c
-fig, ax = plt.subplots()
-ax.axis('off')
-ax.set_aspect(1.0)
-drawShiftedCircles(ax,65,[100,0], 100,.90)
-plt.show()
-fig.savefig('Lab1_Output_Images/lab1_4c.png')
+fig.savefig('Lab1_Output_Images/lab1_5a.png')
