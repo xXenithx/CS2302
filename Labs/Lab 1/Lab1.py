@@ -83,7 +83,7 @@ def drawShiftedCircles(ax,n,center,radius,w):
         #print('New Center Point:', center)
         drawShiftedCircles(ax,n-1,center,radius*w,w)
 
-def createTree(ax,n,p):
+def createTree(ax,n,p,h):
     print('\nN = %d' % n)
     ## Base Case
     if n == 0:
@@ -97,9 +97,16 @@ def createTree(ax,n,p):
         print('Current Tree:')
         print(p)
         
+        y = p[0,1]
         x = p[0,0]
-        left = np.array([[x - x/2, x]])
-        right = np.array([[x + x/2,x]])
+        
+        left = np.array([[x - (2**n), y-h]])
+        right = np.array([[x + (2**n), y-h]])
+#        x = p[0,0]
+#        left = np.array([[x - x/2, x]])
+#        right = np.array([[x + x/2,x]])
+        
+        
         
         print('\nLeft Child: ')
         print(left)
@@ -108,7 +115,7 @@ def createTree(ax,n,p):
         
         ##Left Child
         print('\nAppending and going to left child')
-        p = np.append(p, createTree(ax,n-1,left), axis=0)
+        p = np.append(p, createTree(ax,n-1,left,h), axis=0)
         print('\nReturned from left child.\nNew Tree:')
         print(p)
     
@@ -122,7 +129,7 @@ def createTree(ax,n,p):
 
         ##Right Child
         print('\nAppending and going to right child')
-        p = np.append(p, createTree(ax,n-1,right), axis=0)
+        p = np.append(p, createTree(ax,n-1,right,h), axis=0)
         print('\nReturned from right child.\nNew Tree:')
         print(p)
         
@@ -142,7 +149,8 @@ def drawTree(ax,n,p):
         print(p)
         return
     else:
-        p = createTree(ax,n,p)
+        y = -1 * (p[0,1] - (p[0,1] * n))
+        p = createTree(ax,n,p,y)
         print('\nDone with creating tree: ')
         print(p)
         ax.plot(p[:,0],p[:,1], color='k')
@@ -272,10 +280,10 @@ fig.savefig('Lab1_Output_Images/lab1_4c.png')
 
 ## Problem 4
 # a
-p = np.array([[orig_size/2,orig_size]])
+p = np.array([[5,5]])
 fig, ax = plt.subplots()
 ax.axis('on')
 ax.set_aspect(1.0)
-drawTree(ax,2,p)
+drawTree(ax,6,p)
 plt.show()
 fig.savefig('Lab1_Output_Images/lab1_5a.png')
