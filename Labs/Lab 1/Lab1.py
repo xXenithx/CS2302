@@ -3,7 +3,7 @@ Created on Sun Feb  3 20:02:10 2019
 
 @author: Esteban Andres Bustos
 Class: CS2302 MWF 1:30 - 3:20pm
-Last Modified: Feb 3 2019
+Last Modified: Feb 10 2019
 """
 
 #!/usr/bin/env python3
@@ -17,10 +17,11 @@ import os
 def drawSquares(ax,n,p,w):
     if n > 0:
         i1 = [1,2,3,0,1]
-        ## Base Case
+        
+        "Base Case"
         ax.plot(p[:,0], p[:,1], color='k')
         
-        ## Recursive Call
+        "Recursive Call"
         q = p*w + p[i1] * (1-w)
         drawSquares(ax,n-1,q,w)
         
@@ -29,18 +30,31 @@ def drawMultiSquares(ax,n,p):
         #print('Square Layer %d\n' % n) 
         #print('plotting coordinates:\n', p)
         
-        ### Base Case
+        "Base Case"
+        
+        """
+        Base Case is plotting all the points in the first square.
+        """
+        
         ax.plot(p[:,0],p[:,1], color='k')
         
+        """
+        Gets the side length of the current and finds the radius by squaring the length^2 divied by 2
+        """
         a = p[1] - p[0]
         rad = (math.sqrt(a[1]**2)) / 2
-        mid = p[0] + rad
         
+        #mid = p[0] + rad
         #print('\nLength of square sides: %d\n' % a[1])
         #print('Midpoint of square: \n', mid)
         #print('\nRadius of Square: %d\n' % rad)
         
-        ### Recursive Call
+        "Recursive Call"
+        
+        ""
+        "Recursively adding new square points to new array 4 times and passes to recursive function to plot"    
+        ""
+        
         if n > 1:
             for x in range(4):
                 q = np.array([[p[x,0] - rad/2, p[x,1] - rad/2],
@@ -51,7 +65,10 @@ def drawMultiSquares(ax,n,p):
                 #print('Created square %d, now going to plot square at point %d ...' %(x+1, x))
                 drawMultiSquares(ax,n-1,q)
         else:
-             return #print('Done with square. Returning to previous call.\n')
+            """
+            Doesn't create more squares if n < = 0
+            """
+            return #print('Done with square. Returning to previous call.\n')
                      
             
 def circle(center, rad):
@@ -63,97 +80,131 @@ def circle(center, rad):
 
 def drawCircles(ax,n,center,radius,w):
     if n>0:
-        ## Base Case
+        "Base Case"
         x,y = circle(center,radius)
         ax.plot(x,y,color='k')
-        ## Recursive Call
+        
+        "Recursive Call"
         drawCircles(ax,n-1,center,radius*w,w)
         
 def drawShiftedCircles(ax,n,center,radius,w):
     #print('\nCircle Layer %d' % n)
     if n > 0:
-        ### Base Case
+        "Base Case"
         x,y = circle(center, radius)
         ax.plot(x,y,color='k')
-        ### Recursive Call
+        "Recursive Call"
         #print('Initial Center Point:', center)
         #print('Radius: %d' % radius)
+        
         for x in range(len(center)):
             center[x-1] = center[x-1] * w
         #print('New Center Point:', center)
         drawShiftedCircles(ax,n-1,center,radius*w,w)
 
 def createTree(ax,n,p,h):
-    print('\nN = %d' % n)
-    ## Base Case
-    if n == 0:
-        #c = np.array([[p[0], p[1]]])
-        #print('Returning:\n',c)
-        print('At leaf returning')
-        print(p)
-        
-        return p
-    if n >= 1:
-        print('Current Tree:')
-        print(p)
+    #print('\nN = %d' % n)
+    
+    if n > 0:
+        #print('Current Tree:')
         
         y = p[0,1]
         x = p[0,0]
         
         left = np.array([[x - (2**n), y-h]])
-        right = np.array([[x + (2**n), y-h]])
-#        x = p[0,0]
-#        left = np.array([[x - x/2, x]])
-#        right = np.array([[x + x/2,x]])
+        right = np.array([[x + (2**n), y-h]])                
         
+        #print('\nLeft Child: ')
+        #print(left)
+        #print('\nRight Child: ')
+        #print(right)
         
-        
-        print('\nLeft Child: ')
-        print(left)
-        print('\nRight Child: ')
-        print(right)
-        
-        ##Left Child
-        print('\nAppending and going to left child')
+        "Left Child"
+        #print('\nAppending and going to left child')
         p = np.append(p, createTree(ax,n-1,left,h), axis=0)
-        print('\nReturned from left child.\nNew Tree:')
-        print(p)
     
-        ##Parent
+        "Parent Node"
         parent = np.array([[p[0,0], p[0,1]]])
-        print('\nAppending parent: ')
-        print(parent)
+        #print('\nAppending parent: ')
+        #print(parent)
         p = np.append(p, parent, axis=0)
-        print('\nNew Tree:')
-        print(p)
 
-        ##Right Child
-        print('\nAppending and going to right child')
+        "Right Child"
+        #print('\nAppending and going to right child')
         p = np.append(p, createTree(ax,n-1,right,h), axis=0)
-        print('\nReturned from right child.\nNew Tree:')
-        print(p)
         
-        ##Parent
+        "Parent"
         parent = np.array([[p[0,0], p[0,1]]])
-        print('\nAppending parent: ')
-        print(parent)
+        #print('\nAppending parent: ')
+        #print(parent)
         p = np.append(p, parent, axis=0)
-        print('\nNew Tree:')
-        print(p)
+        
+        return p
+    else:
+        "Base Case"
+        #print('At leaf returning')
+        #print(p)
         return p
     
     
 def drawTree(ax,n,p):
     if n == 0:
-        print('At root')
-        print(p)
+        #print('At root')
+        #print(p)
         return
     else:
         y = -1 * (p[0,1] - (p[0,1] * n))
         p = createTree(ax,n,p,y)
-        print('\nDone with creating tree: ')
-        print(p)
+        #print('\nDone with creating tree: ')
+        #print(p)
         ax.plot(p[:,0],p[:,1], color='k')
+        
+        
+def drawMultiCirlces(ax,n,center,radius):
+    "Base Case"
+    #print('\nCurrent Layer: %d' % n)
+    if n > 0:
+        x,y = circle(center,radius)
+        ax.plot(x,y,color='k')
+        
+        ## Recursive Case
+        new_rad = radius/3
+        Rad_ave = (radius + new_rad) / 2
+        #print('Current Radius: %d\nNew Radius: %d\nRadius Average: %d' %(radius,new_rad,Rad_ave))
+        tmp_x = center[0]
+        #print('\nTemp X Value: %d' % tmp_x)
+        tmp_y = center[1]
+        #print('Temp Y Value: %d\n' % tmp_y)
+        
+        c1 = center
+        #print('Center Circle 1: ', c1)
+        drawMultiCirlces(ax,n-1,c1,new_rad)
+        #print('Back from Circle 1')
+    
+        c2 = np.array([tmp_x - Rad_ave, tmp_y])
+        #print('Center Circle 2: ', c2)
+        drawMultiCirlces(ax,n-1,c2,new_rad)
+        #print('Back from Circle 2')
+        
+        c3 = np.array([tmp_x, tmp_y + Rad_ave])
+        #print('Center Circle 3: ', c3)
+        drawMultiCirlces(ax,n-1,c3,new_rad)
+        #print('Back from Circle 3')
+    
+        c4 = np.array([tmp_x + Rad_ave, tmp_y])
+        #print('Center Circle 4: ', c4)
+        drawMultiCirlces(ax,n-1,c4,new_rad)
+        #print('Back from Circle 4')
+    
+        c5 = np.array([tmp_x, tmp_y - Rad_ave])
+        #print('Center Circle 5: ', c5)
+        drawMultiCirlces(ax,n-1,c5,new_rad)
+        #print('Back from Circle 5')
+    else:
+        #print('At N = 0, return back to previous call...\n')
+        x,y = circle(center,radius)
+        ax.plot(x,y,color='k')
+        
 ############################ functions end here ###########################################
 
 plt.close("all")
@@ -176,7 +227,7 @@ else:
 # a
 p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawSquares(ax,10,p,.2)
 plt.show()
@@ -266,7 +317,7 @@ fig.savefig('Lab1_Output_Images/lab1_4a.png')
 fig, ax = plt.subplots()
 ax.axis('off')
 ax.set_aspect(1.0)
-drawShiftedCircles(ax,55,[100,0], 100,.55)
+drawShiftedCircles(ax,55,[100,0], 100,.65)
 plt.show()
 fig.savefig('Lab1_Output_Images/lab1_4b.png')
 
@@ -284,6 +335,45 @@ p = np.array([[5,5]])
 fig, ax = plt.subplots()
 ax.axis('on')
 ax.set_aspect(1.0)
-drawTree(ax,6,p)
+drawTree(ax,3,p)
 plt.show()
 fig.savefig('Lab1_Output_Images/lab1_5a.png')
+
+p = np.array([[5,5]])
+fig, ax = plt.subplots()
+ax.axis('on')
+ax.set_aspect(1.0)
+drawTree(ax,4,p)
+plt.show()
+fig.savefig('Lab1_Output_Images/lab1_5b.png')
+
+p = np.array([[5,5]])
+fig, ax = plt.subplots()
+ax.axis('on')
+ax.set_aspect(1.0)
+drawTree(ax,7,p)
+plt.show()
+fig.savefig('Lab1_Output_Images/lab1_5c.png')
+
+## Problem 5
+#a
+fig, ax = plt.subplots()
+ax.axis('on')
+ax.set_aspect(1.0)
+drawMultiCirlces(ax,1, [100,100], 100)
+plt.show()
+fig.savefig('Lab1_Output_Images/lab1_6a.png')
+
+fig, ax = plt.subplots()
+ax.axis('on')
+ax.set_aspect(1.0)
+drawMultiCirlces(ax,2, [100,100], 100)
+plt.show()
+fig.savefig('Lab1_Output_Images/lab1_6b.png')
+
+fig, ax = plt.subplots()
+ax.axis('on')
+ax.set_aspect(1.0)
+drawMultiCirlces(ax,3, [100,100], 100)
+plt.show()
+fig.savefig('Lab1_Output_Images/lab1_6c.png')
