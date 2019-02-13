@@ -47,7 +47,7 @@ def drawMultiSquares(ax,n,p):
         ax.plot(p[:,0],p[:,1], color='k')
         
         """
-        Gets the side length of the current and finds the radius by squaring the length^2 divied by 2
+        Gets the side length of the current and finds the radius by squaring the length^2 divided by 2
         """
         a = p[1] - p[0]
         rad = (math.sqrt(a[1]**2)) / 2
@@ -90,6 +90,9 @@ def circle(center, rad):
     return x,y
 
 def drawCircles(ax,n,center,radius,w):
+    """
+    Plots nothing if array has either no value or N == 0
+    """
     if n>0:
         "Base Case"
         x,y = circle(center,radius)
@@ -97,8 +100,14 @@ def drawCircles(ax,n,center,radius,w):
         
         "Recursive Call"
         drawCircles(ax,n-1,center,radius*w,w)
+    else:
+        print('Array Empty!')
         
 def drawShiftedCircles(ax,n,center,radius,w):
+    
+    """
+    Plots nothing if array has either no value or N == 0
+    """
     #print('\nCircle Layer %d' % n)
     if n > 0:
         "Base Case"
@@ -115,6 +124,8 @@ def drawShiftedCircles(ax,n,center,radius,w):
             center[x-1] = center[x-1] * w
         #print('New Center Point:', center)
         drawShiftedCircles(ax,n-1,center,radius*w,w)
+    else:
+        print('Array Empty!')
 
 def createTree(ax,n,p,h):
     #print('\nN = %d' % n)
@@ -214,7 +225,7 @@ def drawMultiCirlces(ax,n,center,radius):
     if n > 0:
         "Recursive Case"
         
-        "Draws Initial Circle
+        "Draws Initial Circle"
         x,y = circle(center,radius)
         ax.plot(x,y,color='k')
         
@@ -232,7 +243,7 @@ def drawMultiCirlces(ax,n,center,radius):
         #print('Temp Y Value: %d\n' % tmp_y)
         
         """
-        Creates the 5 cirles
+        Creates the 5 circles
         """
         c1 = center
         #print('Center Circle 1: ', c1)
@@ -281,7 +292,7 @@ else:
 # Different Lab Figures:
 
 ### Problem 1
-## Sqaures
+## Squares
 
 "a"
 p = np.array([[0,0],[0,orig_size],[orig_size,orig_size],[orig_size,0],[0,0]])
@@ -396,7 +407,7 @@ fig.savefig('Lab1_Output_Images/lab1_4c.png')
 "a"
 p = np.array([[5,5]])
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawTree(ax,3,p)
 plt.show()
@@ -405,7 +416,7 @@ fig.savefig('Lab1_Output_Images/lab1_5a.png')
 "b"
 p = np.array([[5,5]])
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawTree(ax,4,p)
 plt.show()
@@ -414,7 +425,7 @@ fig.savefig('Lab1_Output_Images/lab1_5b.png')
 "c"
 p = np.array([[5,5]])
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawTree(ax,7,p)
 plt.show()
@@ -424,7 +435,7 @@ fig.savefig('Lab1_Output_Images/lab1_5c.png')
 
 "a"
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawMultiCirlces(ax,1, [100,100], 100)
 plt.show()
@@ -432,7 +443,7 @@ fig.savefig('Lab1_Output_Images/lab1_6a.png')
 
 "b"
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawMultiCirlces(ax,2, [100,100], 100)
 plt.show()
@@ -440,7 +451,7 @@ fig.savefig('Lab1_Output_Images/lab1_6b.png')
 
 "c"
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 drawMultiCirlces(ax,3, [100,100], 100)
 plt.show()
