@@ -260,7 +260,7 @@ def sortMerge(L):
         left = sortMerge(leftList)
         right = sortMerge(rightList)
         
-        return merge(left.head,right.head)
+        return Listify(merge(left.head,right.head))
 
 def merge(left,right):
     ## Base Case
