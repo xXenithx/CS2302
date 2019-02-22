@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Feb 18 15:54:00 2019
-
-@author: xenith
+@author: Esteban Andres Bustos
+CS2302 Olac Fuentes MW 1:30 - 2:50 pm
+TA: Anindita Nath , Maliheh Zargaran
+Last Modified: Fri Feb 22, 2019
 """
 
 ############# Node Functions #############################
