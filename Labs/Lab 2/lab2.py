@@ -30,11 +30,11 @@ class List(object):
         self.head = None
         self.tail = None
         
-def IsEmpty(L):  
-    return L.head == None     
+def IsEmpty(L):
+    return L.head is None
 
 def getLength(L):
-    if L.head == None:
+    if L.head is None:
         return 0
     else:
         tmp = L.head
@@ -91,7 +91,7 @@ def InsertAfter(L, cur, x):
 def Remove(L,x):
     # Removes x from list L
     # It does nothing if x is not in L
-    if L.head==None:
+    if L.head is None:
         return
     if L.head.item == x:
         if L.head == L.tail: # x is the only element in list
@@ -102,9 +102,9 @@ def Remove(L,x):
     else:
          # Find x
          temp = L.head
-         while temp.next != None and temp.next.item !=x:
+         while temp.next is not None and temp.next.item != x:
              temp = temp.next
-         if temp.next != None: # x was found
+         if temp.next is not None: # x was found
              if temp.next == L.tail: # x is the last node
                  L.tail = temp
                  L.tail.next = None
@@ -130,7 +130,7 @@ def PrintReverse(L):
     print()     
     
 def isSorted(L):
-    if L.head == None:
+    if L.head is None:
         return True
     tmp = L.head
     
@@ -160,38 +160,27 @@ def CopyList(L):
         
     return newList
 
-    
-def Median_BubbleSort(L):
-    C = CopyList(L)    
-    sortBubble(C)    
+def getMedian(L):
+    C = CopyList(L)
     return ElementAt(C, getLength(C) // 2)
 
-def Median_MergeSort(L):
-    C = CopyList(L)    
-    sortMerge(C)    
-    return ElementAt(C, getLength(C) // 2)
+def getMid(N):
+    if N is None:
+        return N
+    else:
+        slw_ptr = N
+        fst_ptr = N.next
 
-def Median_QuickSort(L):
-    C = CopyList(L)    
-    sortBubble(C)    
-    return ElementAt(C, getLength(C) // 2)
-
-def getMid(L):
-    if L.head is None:
-        return L.head
-    fst_ptr = L.head.next
-    slw_ptr = L.head
-    
-    while fst_ptr is not None:
-        fst_ptr = fst_ptr.next
-        if fst_ptr is not None:
-            slw_ptr = slw_ptr.next
+        while fst_ptr is not None:
             fst_ptr = fst_ptr.next
-    return slw_ptr
+            if fst_ptr is not None:
+                slw_ptr = slw_ptr.next
+                fst_ptr = fst_ptr.next
+        return slw_ptr
 
 ############# List Methods #############################
 ############### Sorting Methods ########################
-def sortBubble(L):
+def bubbleSort(L):
     if IsEmpty(L):
         print('List is Empty!')
     elif getLength(L) == 1:
@@ -221,6 +210,8 @@ def sortBubble(L):
                     #print('\nNot Swapping, Updating current node...\n')
                 cur = cur.next
 def Listify(N):
+    newList = List()
+
     if N is None:
         print("Can't make a list with no node!")
     else:
@@ -234,35 +225,28 @@ def Listify(N):
             while cur is not None:
                 Append(newList,cur.item)
                 cur = cur.next
-                
     return newList
+
+def mergeSort(L):
+    L = Listify(sortMerge(L.head))
+    return L
                 
-def sortMerge(L):
-    print("\nCurrent List:")
-    Print(L)
-    
-    if IsEmpty(L):
-        print('List is Empty!')
-    elif getLength(L) == 1:
-        print('List is already sorted')
+def sortMerge(N):
+    # print("\nCurrent List:")
+    # Print(L)
+    if N is None or N.next is None:
+        return N
     else:
         ##Create Partitions
-        mid = getMid(L)
-        midNext = mid.next
+        mid = getMid(N)
+        left_hd = N
+        right_hd = mid.next
         mid.next = None
-        
-        leftList = Listify(L.head)
-        
-        rightList = Listify(midNext)
-        
-        
-        
-        left = sortMerge(leftList)
-        right = sortMerge(rightList)
-        
-        return Listify(merge(left.head,right.head))
+
+        return merge(sortMerge(left_hd), sortMerge(right_hd))
 
 def merge(left,right):
+
     ## Base Case
     if left == None:
         return right
@@ -270,16 +254,12 @@ def merge(left,right):
         return left
     
     if left.item <= right.item:
-        tmp = List()
-        tmp.head = left
-        
-        cur = tmp.head
+        tmp = left
+        cur = tmp
         cur.next = merge(left.next, right)
     else:
-        tmp = List()
-        tmp.head = right
-        
-        cur = tmp.head
+        tmp = right
+        cur = tmp
         cur.next = merge(left, right.next)
     return tmp
 ############### Sorting Methods ########################
@@ -300,15 +280,24 @@ L3 = List()
 for x in l3:
     Append(L3,x)
 
+print('Get Median of Lists:  \n')
+
+print('List 1:')
 Print(L)
-print('Finding Median of list..\n')
 
-print('\nMethod: Bubble Sort')
-med = Median_BubbleSort(L)
-print('Medium of List: %d' % med.item)
+print('Method: Bubble Sort')
+bubbleSort(L)
+Print(L)
+med = getMedian(L)
+print('Medium of List: %d\n' % med.item)
 
-print('\nMethod: MergeSort')
-med2 = Median_MergeSort(L2)
+print('List 2:')
+Print(L2)
+
+print('Method: MergeSort')
+L2 = mergeSort(L2)
+med2 = getMedian(L2)
+Print(L2)
 print('Medium of List: %d' % med2.item)
 
 #print('\nMethod: QuickSort')
