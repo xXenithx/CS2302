@@ -16,7 +16,7 @@ class Node(object):
         self.next = next 
         
 def PrintNodes(N):
-    if N != None:
+    if N is not None:
         print(N.item, end=' ')
         PrintNodes(N.next)
         
@@ -183,6 +183,8 @@ def getMid(N):
 ############# List Methods #############################
 ############### Sorting Methods ########################
 def bubbleSort(L):
+    count = 0
+
     if IsEmpty(L):
         print('List is Empty!')
     elif getLength(L) == 1:
@@ -190,18 +192,20 @@ def bubbleSort(L):
     else:
         cur = L.head
         swapped = True
-        
+
         while swapped:
             cur = L.head
             swapped = False
-            
+            count += 1
+
             while cur.next is not None:
                 #print('\nIn Second While Loop')
                 #Print(L)
-                
                 #print('\nComparing %d with %d\n' % (cur.item, cur.next.item))
+                count += 1
                 if cur.item > cur.next.item:
                     #print('Swapping...')
+                    count += 1
                     tmp = cur.item
                     cur.item = cur.next.item
                     cur.next.item = tmp
@@ -211,6 +215,8 @@ def bubbleSort(L):
                 #else:
                     #print('\nNot Swapping, Updating current node...\n')
                 cur = cur.next
+    print('Number Of Comparisons Bubble sort: %d' % (count - 1))
+
 def Listify(N):
     newList = List()
 
@@ -250,9 +256,9 @@ def sortMerge(N):
 def merge(left,right):
 
     ## Base Case
-    if left == None:
+    if left is  None:
         return right
-    if right == None:
+    if right is None:
         return left
     
     if left.item <= right.item:
