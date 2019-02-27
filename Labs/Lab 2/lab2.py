@@ -57,6 +57,16 @@ def Search(L,x):
         else:
             cur = cur.next
     return cur
+
+def indexOfElement(L,x):
+    cur = L.head
+    index = 0
+
+    while cur is not x:
+        index += 1
+        cur = cur.next
+
+    return index
             
 def Append(L,x): 
     # Inserts x at end of list L
@@ -190,7 +200,6 @@ def bubbleSort(L):
     elif getLength(L) == 1:
         print('List is already sorted')
     else:
-        cur = L.head
         swapped = True
 
         while swapped:
@@ -270,11 +279,54 @@ def merge(left,right):
         cur = tmp
         cur.next = merge(left, right.next)
     return tmp
+
+
+def quickSort(L):
+    quickSortHelper(L,L.head,L.tail)
+
+def quickSortHelper(L, first, last):
+    if indexOfElement(L, first) < indexOfElement(L, last):
+        split = partition(L, first, last)
+
+        quickSortHelper(L, first, ElementAt(L, indexOfElement(L, split) - 1))
+        quickSortHelper(L, split.next, last)
+
+def partition(L, first, last):
+    pivotVal = first
+
+    left = first.next
+    right = last
+
+    done = False
+
+    while not done:
+
+        while indexOfElement(L,left) <= indexOfElement(L, right)  and left.item <= pivotVal.item:
+            left = left.next
+        while right.item >= pivotVal.item and indexOfElement(L, right) >= indexOfElement(L, left):
+            right = ElementAt(L, indexOfElement(L, right) - 1)
+        if indexOfElement(L, right) < indexOfElement(L, left):
+            done = True
+        else:
+            tmp = left.item
+            left.item = right.item
+            right.item = tmp
+    tmp = first.item
+    first.item = last.item
+    right.item = tmp
+
+    return right
+
+
+
+
+
 ############### Sorting Methods ########################
 ################  Main  ################################
 
 l = [20,10,45,1,12]
 L = List()
+
 for x in l:
     Append(L,x)
     
@@ -308,6 +360,8 @@ med2 = getMedian(L2)
 Print(L2)
 print('Medium of List: %d' % med2.item)
 
-#print('\nMethod: QuickSort')
-#med3 = Median_QuickSort(L3)
-#print('Medium of List: %d' % med3.item)
+print('\nMethod: QuickSort')
+quickSort(L3)
+Print(L3)
+med3 = getMedian(L3)
+print('Medium of List: %d' % med3.item)
