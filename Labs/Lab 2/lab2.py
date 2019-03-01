@@ -282,40 +282,28 @@ def merge(left,right):
 
 
 def quickSort(L):
-    quickSortHelper(L,L.head,L.tail)
+     return quickSortHelper(L,L.head,L.tail)
 
 def quickSortHelper(L, first, last):
-    if indexOfElement(L, first) < indexOfElement(L, last):
-        split = partition(L, first, last)
-
-        quickSortHelper(L, first, ElementAt(L, indexOfElement(L, split) - 1))
-        quickSortHelper(L, split.next, last)
+    if first is not None and last is not None:
+        part = partition(L, first, last)
+        quickSortHelper(L, first, part)
+        quickSortHelper(L, part.next, last)
+    return L
 
 def partition(L, first, last):
-    pivotVal = first
+    pos = first
+    cur = pos.next
 
-    left = first.next
-    right = last
-
-    done = False
-
-    while not done:
-
-        while indexOfElement(L,left) <= indexOfElement(L, right)  and left.item <= pivotVal.item:
-            left = left.next
-        while right.item >= pivotVal.item and indexOfElement(L, right) >= indexOfElement(L, left):
-            right = ElementAt(L, indexOfElement(L, right) - 1)
-        if indexOfElement(L, right) < indexOfElement(L, left):
-            done = True
-        else:
-            tmp = left.item
-            left.item = right.item
-            right.item = tmp
-    tmp = first.item
-    first.item = last.item
-    right.item = tmp
-
-    return right
+    while cur is not None:
+        if cur.item < pos.item:
+            pivot = pos.item
+            pos.item = cur.item
+            cur.item = pos.next.item
+            pos.next.item = pivot
+            pos = pos.next
+        cur = cur.next
+    return pos
 
 
 
