@@ -3,7 +3,7 @@ Created on Sun Mar 3 2:59:57 2019
 
 @author: Esteban Andres Bustos
 Class: CS2302 MWF 1:30 - 3:20pm
-Last Modified: Mar 3 2019
+Last Modified: Mar 8 2019
 """
 
 import matplotlib.pyplot as plt
@@ -163,8 +163,6 @@ def TreeToArray(T,arr):
         TreeToArray(T.left,arr)
         arr.append(T.item)
         TreeToArray(T.right,arr)
-    else:
-        return
 
 def KeysAtDepth(T, n):
     if n < 0:
