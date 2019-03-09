@@ -18,48 +18,6 @@ class BST(object):
         self.left = left
         self.right = right
 
-
-def circle(center, rad):
-    n = int(4 * rad * math.pi)
-    t = np.linspace(0, 6.3, n)
-    x = center[0] + rad * np.sin(t)
-    y = center[1] + rad * np.cos(t)
-    return x, y
-
-def DrawNode(T, center, rad, ax):
-    if T is not None:
-        x, y = circle(center, rad)
-        ax.plot(x, y, color='k', linewidth=2.5, zorder=1)
-        ax.fill(x,y,color='white', zorder=3)
-        ax.text(center[0], center[1], str(T.item), horizontalalignment='center', verticalalignment='center',
-                fontsize=6.5, zorder=4)
-
-
-def DrawTree(T, center, xMax, yMax, rad, w, ax):
-    if T is not None:
-        ctr_left = [center[0] - xMax, center[1] - yMax]
-        ctr_right = [center[0] + xMax , center[1] - yMax]
-
-        if T.left is not None and T.right is not None:
-            #Left Branch
-            ax.plot([center[0], ctr_left[0]] ,[center[1], ctr_left[1]] ,color='k', zorder=2)
-            #Right Branch
-            ax.plot([center[0], ctr_right[0]] ,[center[1], ctr_right[1]] ,color='k',zorder=2)
-
-        if T.left is not None and T.right is None:
-            ax.plot([center[0], ctr_left[0]] ,[center[1], ctr_left[1]] ,color='k',zorder=2)
-
-        if T.right is not None and T.left is None:
-            ax.plot([center[0], ctr_right[0]] ,[center[1], ctr_right[1]] ,color='k',zorder=2)
-
-        DrawNode(T, center, rad, ax)
-
-        # Goto Left child
-        DrawTree(T.left, ctr_left, xMax/w, yMax, rad, w, ax)
-        # Goto Right child
-        DrawTree(T.right, ctr_right, xMax/w, yMax, rad, w, ax)
-
-
 def Insert(T, newItem):
     if T == None:
         T = BST(newItem)
@@ -89,7 +47,6 @@ def Delete(T, del_item):
                 T.right = Delete(T.right, m.item)
     return T
 
-
 def InOrder(T):
     # Prints items in BST in ascending order
     if T is not None:
@@ -97,14 +54,12 @@ def InOrder(T):
         print(T.item, end=' ')
         InOrder(T.right)
 
-
 def InOrderD(T, space):
     # Prints items and structure of BST
     if T is not None:
         InOrderD(T.right, space + '   ')
         print(space, T.item)
         InOrderD(T.left, space + '   ')
-
 
 def SmallestL(T):
     # Returns smallest item in BST. Returns None if T is None
@@ -114,7 +69,6 @@ def SmallestL(T):
         T = T.left
     return T
 
-
 def Smallest(T):
     # Returns smallest item in BST. Error if T is None
     if T.left is None:
@@ -122,13 +76,11 @@ def Smallest(T):
     else:
         return Smallest(T.left)
 
-
 def Largest(T):
     if T.right is None:
         return T
     else:
         return Largest(T.right)
-
 
 def Find(T, k):
     # Returns the address of k in BST, or None if k is not in the tree
@@ -138,14 +90,12 @@ def Find(T, k):
         return Find(T.right, k)
     return Find(T.left, k)
 
-
 def FindAndPrint(T, k):
     f = Find(T, k)
     if f is not None:
         print(f.item, 'found')
     else:
         print(k, 'not found')
-
 
 def FindIter(T, k):
     cur = T
@@ -158,14 +108,81 @@ def FindIter(T, k):
             cur = cur.right
     return None
 
-def InsertSorted(Tree, arr):
-    if len(arr) != 0:
-        for x in range(len(arr)):
-            if Tree is None:
-                Tree = BST(arr[x])
-            Tree = Tree.right
+###############################################################################
+def circle(center, rad):
+    n = int(4 * rad * math.pi)
+    t = np.linspace(0, 6.3, n)
+    x = center[0] + rad * np.sin(t)
+    y = center[1] + rad * np.cos(t)
+    return x, y
 
-# Code to test the functions above
+def DrawNode(T, center, rad, ax):
+    if T is not None:
+        x, y = circle(center, rad)
+        ax.plot(x, y, color='k', linewidth=2.5, zorder=1)
+        ax.fill(x,y,color='white', zorder=3)
+        ax.text(center[0], center[1], str(T.item), horizontalalignment='center', verticalalignment='center',
+                fontsize=6.5, zorder=4)
+
+def DrawTree(T, center, xMax, yMax, rad, w, ax):
+    if T is not None:
+        ctr_left = [center[0] - xMax, center[1] - yMax]
+        ctr_right = [center[0] + xMax , center[1] - yMax]
+
+        if T.left is not None and T.right is not None:
+            #Left Branch
+            ax.plot([center[0], ctr_left[0]] ,[center[1], ctr_left[1]] ,color='k', zorder=2)
+            #Right Branch
+            ax.plot([center[0], ctr_right[0]] ,[center[1], ctr_right[1]] ,color='k',zorder=2)
+
+        if T.left is not None and T.right is None:
+            ax.plot([center[0], ctr_left[0]] ,[center[1], ctr_left[1]] ,color='k',zorder=2)
+
+        if T.right is not None and T.left is None:
+            ax.plot([center[0], ctr_right[0]] ,[center[1], ctr_right[1]] ,color='k',zorder=2)
+
+        DrawNode(T, center, rad, ax)
+
+        # Goto Left child
+        DrawTree(T.left, ctr_left, xMax/w, yMax, rad, w, ax)
+        # Goto Right child
+        DrawTree(T.right, ctr_right, xMax/w, yMax, rad, w, ax)
+
+def CreateTreeSorted(arr):
+    if len(arr) != 0:
+        mid = len(arr)//2
+        T = BST(arr[mid])
+        T.left = CreateTreeSorted( arr[:mid])
+        T.right = CreateTreeSorted(arr[mid+1:])
+        return T
+    else:
+        return None
+
+def TreeToArray(T,arr):
+    if T is not None:
+        TreeToArray(T.left,arr)
+        arr.append(T.item)
+        TreeToArray(T.right,arr)
+    else:
+        return
+
+def KeysAtDepth(T, n):
+    if n < 0:
+        print("Error: Cannot have a depth of %d" % n, end=" ")
+    elif n == 0:
+        if T is not None:
+            print(T.item, end=" ")
+    else:
+        if T.left is not None:
+            KeysAtDepth(T.left, n-1)
+        if T.right is not None:
+            KeysAtDepth(T.right, n-1)
+###############################################################################
+""" 
+Code to test the functions above
+"""
+
+# Creates two Trees for testing
 T = None
 A = [70, 50, 90, 130, 150, 40, 10, 30, 100, 180, 45, 60, 140, 42]
 for a in A:
@@ -176,38 +193,43 @@ A1 = [10,4,15,2,8,12,18,1,3,5,9,7]
 for a1 in A1:
     T1 = Insert(T1,a1)
 
-U = None
-B = [1,2,3,4,5,6,7,8,9]
-for b in B:
-    U = Insert(U,b)
-
-# InOrderD(T, "")
-
+# Problem 1: Draw the tree visually with Matplotlib
 plt.close()
 fig, ax = plt.subplots()
-ax.axis('on')
+ax.axis('off')
 ax.set_aspect(1.0)
 DrawTree(T1, [0, 0], 55, 50, 7, 1.6, ax)
 plt.show()
 
-
-# plt.close()
-# fig, ax = plt.subplots()
-# ax.axis('on')
-# ax.set_aspect(1.0)
-# DrawTree(U, [0, 0], 100, 10, 1, ax)
-# plt.show()
-
+# Problem 2: Search the tree using non-recursive method (Iterative)
 key = 7
-print('Looking for k: %d' % key)
-found = FindIter(U,key)
+print('\nLooking for k: %d' % key)
+found = FindIter(T1,key)
 if found is not None:
-    print('Found %d' % found.item)
+    print('Found %d\n' % found.item)
 else:
-    print('Key %d was not found!' % key)
-
-print('Creating tree with a sorted list..')
+    print('Key %d was not found!\n' % key)
+    
+# Problem 3: Build a tree via a sorted list that should be in O(n) running time.    
+print('Creating tree with a sorted list..\n')
 arr = [5,6,7,8,9,10]
-T1 = None
-InsertSorted(T1,arr)
-InOrderD(T1, "")
+T2 = CreateTreeSorted(arr)
+
+# Prints the tree for problem 3.
+fig, ax = plt.subplots()
+ax.axis('off')
+ax.set_aspect(1.0)
+DrawTree(T2, [0, 0], 55, 50, 7, 1.6, ax)
+plt.show()
+
+# Problem 4: Extracts data from the tree and stores into array. Tree traversal is In-Order.
+print('Extracting from data from Tree..')
+arr2 = []
+TreeToArray(T2,arr2)
+print(arr2)
+
+# Problem 5: Prints all keys at depth 'n'. Where n >= 0
+n = [0,1,2,3,4,5,-1]
+for i in n:
+    print('\nPrinting all keys at depth %d:' % n[i], end=" ")
+    KeysAtDepth(T1, n[i])
